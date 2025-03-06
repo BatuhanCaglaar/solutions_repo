@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectile Motion Simulation</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        canvas { background: #f0f0f0; border: 1px solid black; }
+        .controls { margin: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Projectile Motion Simulation</h2>
+    <div class="controls">
+        <label>Initial Speed (m/s):</label>
+        <input type="number" id="speed" value="20" min="5" max="50"> 
+        <label>Launch Angle (°):</label>
+        <input type="number" id="angle" value="45" min="0" max="90">
+        <button onclick="simulate()">Launch</button>
+    </div>
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <script>
+        const g = 9.81; // Gravity (m/s²)
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        function simulate() {
+            const v0 = parseFloat(document.getElementById("speed").value);
+            const angle = parseFloat(document.getElementById("angle").value);
+            const theta = angle * Math.PI / 180;
+            
+            const vx = v0 * Math.cos(theta);
+            const vy = v0 * Math.sin(theta);
+            
+            const t_flight = (2 * vy) / g;
+            const max_x = vx * t_flight;
+            const max_y = (vy ** 2) / (2 * g);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGround();
+            animateProjectile(v0, angle, vx, vy, t_flight);
+        }
+
+        function drawGround() {
+            ctx.fillStyle = "green";
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+        }
+
+        function animateProjectile(v0, angle, vx, vy, t_flight) {
+            let t = 0;
+            const dt = 0.02; 
+            let x, y;
+
+            function drawFrame() {
+                t += dt;
+                if (t > t_flight) return;
+                
+                x = vx * t;
+                y = vy * t - 0.5 * g * t ** 2;
+
+                let screenX = (x / 2) * 20;  
+                let screenY = canvas.height - (y * 20) - 20; 
+
+                ctx.fillStyle = "blue";
+                ctx.beginPath();
+                ctx.arc(screenX, screenY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                requestAnimationFrame(drawFrame);
+            }
+            drawFrame();
+        }
+
+        simulate();
+    </script>
+</body>
+</html>
