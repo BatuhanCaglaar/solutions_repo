@@ -1,3 +1,5 @@
+# Exercises
+
 ## Mechanics
 
 ### Problem 1
