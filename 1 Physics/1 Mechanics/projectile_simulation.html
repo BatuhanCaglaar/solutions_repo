@@ -1,11 +1,9 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Projectile Motion Simulation</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Advanced Projectile Motion Simulation</title>
     <style>
         body { text-align: center; font-family: Arial, sans-serif; }
         canvas { background: #f0f0f0; border: 2px solid black; margin-top: 10px; }
@@ -14,10 +12,10 @@
     </style>
 </head>
 <body>
-    <h2>Ultimate 3D Projectile Motion Simulator</h2>
+    <h2>Projectile Motion Simulator</h2>
     <div class="controls">
         <label>Initial Speed (m/s):</label>
-        <input type="range" id="speed" min="5" max="100" value="20" oninput="updateValues()"> 
+        <input type="range" id="speed" min="5" max="50" value="20" oninput="updateValues()"> 
         <span id="speedValue">20</span> m/s
         <br><br>
         <label>Launch Angle (°):</label>
@@ -27,68 +25,60 @@
         <label>Air Resistance:</label>
         <input type="checkbox" id="airResistance">
         <br><br>
-        <label>Wind Effect (m/s):</label>
-        <input type="range" id="wind" min="-10" max="10" value="0" oninput="updateValues()"> 
-        <span id="windValue">0</span> m/s
-        <br><br>
         <button onclick="simulate()">Launch</button>
         <p id="stats"></p>
     </div>
     
-    <div id="canvas-container"></div>
-    
+    <canvas id="canvas" width="800" height="400"></canvas>
+
     <script>
-        const g = 9.81;
-        const air_resistance = 0.02;
-        const scale = 5;
-        let scene, camera, renderer, projectile;
-
-        function initScene() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(800, 400);
-            document.getElementById("canvas-container").appendChild(renderer.domElement);
-            
-            const groundGeometry = new THREE.PlaneGeometry(200, 200);
-            const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x008000, side: THREE.DoubleSide });
-            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-            ground.rotation.x = - Math.PI / 2;
-            scene.add(ground);
-
-            const projectileGeometry = new THREE.SphereGeometry(1, 16, 16);
-            const projectileMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-            projectile = new THREE.Mesh(projectileGeometry, projectileMaterial);
-            projectile.position.set(-90, 1, 0);
-            scene.add(projectile);
-            
-            camera.position.set(0, 30, 120);
-            renderer.render(scene, camera);
-        }
+        const g = 9.81; // Gravity (m/s²)
+        const air_resistance = 0.02; // Air resistance coefficient (adjustable)
+        const scale = 10; // Scale factor for visualization
+        
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
 
         function updateValues() {
             document.getElementById("speedValue").textContent = document.getElementById("speed").value;
             document.getElementById("angleValue").textContent = document.getElementById("angle").value;
-            document.getElementById("windValue").textContent = document.getElementById("wind").value;
         }
 
         function simulate() {
             const v0 = parseFloat(document.getElementById("speed").value);
             const angle = parseFloat(document.getElementById("angle").value);
             const airResistanceEnabled = document.getElementById("airResistance").checked;
-            const windEffect = parseFloat(document.getElementById("wind").value);
             const theta = angle * Math.PI / 180;
 
-            let vx = v0 * Math.cos(theta) + windEffect;
-            let vy = v0 * Math.sin(theta);
-            let t = 0, dt = 0.02;
+            const vx0 = v0 * Math.cos(theta);
+            const vy0 = v0 * Math.sin(theta);
+            const t_flight = (2 * vy0) / g;
+            const max_x = vx0 * t_flight;
+            const max_y = (vy0 ** 2) / (2 * g);
 
-            function animate() {
-                if (vy < 0 && projectile.position.y <= 1) {
-                    vy = -vy * 0.6;
-                    if (Math.abs(vy) < 0.5) return;
-                }
+            document.getElementById("stats").innerHTML = 
+                `Max Range: ${max_x.toFixed(2)} m | Max Height: ${max_y.toFixed(2)} m | Flight Time: ${t_flight.toFixed(2)} s`;
 
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGround();
+            animateProjectile(v0, angle, vx0, vy0, t_flight, airResistanceEnabled);
+        }
+
+        function drawGround() {
+            ctx.fillStyle = "green";
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+        }
+
+        function animateProjectile(v0, angle, vx0, vy0, t_flight, airResistanceEnabled) {
+            let t = 0;
+            const dt = 0.02; 
+            let x, y;
+            let vx = vx0, vy = vy0;
+
+            function drawFrame() {
+                t += dt;
+                if (t > t_flight || y < 0) return;
+                
                 if (airResistanceEnabled) {
                     vx -= air_resistance * vx * dt;
                     vy -= g * dt + air_resistance * vy * dt;
@@ -96,19 +86,23 @@
                     vy -= g * dt;
                 }
 
-                projectile.position.x += vx * dt * scale;
-                projectile.position.y = Math.max(1, projectile.position.y + vy * dt * scale);
-                
-                if (projectile.position.y > 1 || Math.abs(vy) > 0.5) {
-                    requestAnimationFrame(animate);
-                }
-                renderer.render(scene, camera);
+                x = vx0 * t;
+                y = vy0 * t - 0.5 * g * t ** 2;
+
+                let screenX = x * scale;  
+                let screenY = canvas.height - (y * scale) - 20; 
+
+                ctx.fillStyle = "blue";
+                ctx.beginPath();
+                ctx.arc(screenX, screenY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                requestAnimationFrame(drawFrame);
             }
-            animate();
+            drawFrame();
         }
 
-        initScene();
+        simulate();
     </script>
 </body>
 </html>
-```
