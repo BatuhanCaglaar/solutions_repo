@@ -114,4 +114,4 @@ plt.grid()
 plt.show()
 ```
 
-<iframe src="projectile_simulation.html" width="800" height="500"></iframe>
+🔗 **[Click here to try the simulation](projectile_simulation.html)**
