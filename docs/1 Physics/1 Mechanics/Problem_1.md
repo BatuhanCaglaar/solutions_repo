@@ -119,3 +119,6 @@ plt.show()
 ```
 
 🔗 **[Click here to try the simulation](projectile_simulation.html)**
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Zlq78dhbvtvSUQSWagPK_FudQFAy5P9B?usp=sharing)
+
