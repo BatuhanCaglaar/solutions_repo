@@ -3,108 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Projectile Motion Simulation</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <title>Advanced Projectile Motion Simulation</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-        canvas { display: block; }
-        #info { position: absolute; top: 10px; left: 10px; color: white; }
+        body { text-align: center; font-family: Arial, sans-serif; }
+        canvas { background: #f0f0f0; border: 2px solid black; margin-top: 10px; }
+        .controls { margin: 10px; }
+        label { font-weight: bold; }
     </style>
 </head>
 <body>
-    <div id="info">
-        <h2>3D Projectile Motion</h2>
-        <p>Use the GUI to change speed, angle, and air resistance</p>
+    <h2>Projectile Motion Simulator</h2>
+    <div class="controls">
+        <label>Initial Speed (m/s):</label>
+        <input type="range" id="speed" min="5" max="50" value="20" oninput="updateValues()"> 
+        <span id="speedValue">20</span> m/s
+        <br><br>
+        <label>Launch Angle (°):</label>
+        <input type="range" id="angle" min="0" max="90" value="45" oninput="updateValues()"> 
+        <span id="angleValue">45</span>°
+        <br><br>
+        <label>Air Resistance:</label>
+        <input type="checkbox" id="airResistance">
+        <br><br>
+        <button onclick="simulate()">Launch</button>
+        <p id="stats"></p>
     </div>
+    
+    <canvas id="canvas" width="800" height="400"></canvas>
+
     <script>
-        let scene, camera, renderer, ball, ground;
-        let clock = new THREE.Clock();
-        let velocity, position;
-        let airResistance = false;
-        let gravity = new THREE.Vector3(0, -9.81, 0);
-        let initialSpeed = 20;
-        let launchAngle = 45;
+        const g = 9.81; // Gravity (m/s²)
+        const air_resistance = 0.02; // Air resistance coefficient (adjustable)
+        const scale = 10; // Scale factor for visualization
+        
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
 
-        function init() {
-            // 3D Sahneyi oluştur
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x87CEEB);
-
-            // Kamera ayarları
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(30, 15, 30);
-            camera.lookAt(0, 5, 0);
-
-            // Renderer ayarları
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            // Işıklandırma
-            let light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(10, 20, 10);
-            scene.add(light);
-
-            let ambientLight = new THREE.AmbientLight(0x404040);
-            scene.add(ambientLight);
-
-            // Top (Proje Atışı)
-            let ballGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-            let ballMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-            ball = new THREE.Mesh(ballGeometry, ballMaterial);
-            scene.add(ball);
-
-            // Zemin
-            let groundGeometry = new THREE.PlaneGeometry(50, 50);
-            let groundMaterial = new THREE.MeshStandardMaterial({ color: 0x008000, side: THREE.DoubleSide });
-            ground = new THREE.Mesh(groundGeometry, groundMaterial);
-            ground.rotation.x = -Math.PI / 2;
-            ground.position.y = -0.5;
-            scene.add(ground);
-
-            // Simülasyonu başlat
-            resetProjectile();
-
-            // Kullanıcı arayüzü (GUI)
-            let gui = new dat.GUI();
-            gui.add(window, 'initialSpeed', 5, 50).name("Speed (m/s)").onChange(resetProjectile);
-            gui.add(window, 'launchAngle', 0, 90).name("Angle (°)").onChange(resetProjectile);
-            gui.add(window, 'airResistance').name("Air Resistance");
-
-            animate();
+        function updateValues() {
+            document.getElementById("speedValue").textContent = document.getElementById("speed").value;
+            document.getElementById("angleValue").textContent = document.getElementById("angle").value;
         }
 
-        function resetProjectile() {
-            let radianAngle = THREE.MathUtils.degToRad(launchAngle);
-            position = new THREE.Vector3(0, 1, 0);
-            velocity = new THREE.Vector3(initialSpeed * Math.cos(radianAngle), initialSpeed * Math.sin(radianAngle), 0);
-            ball.position.copy(position);
+        function simulate() {
+            const v0 = parseFloat(document.getElementById("speed").value);
+            const angle = parseFloat(document.getElementById("angle").value);
+            const airResistanceEnabled = document.getElementById("airResistance").checked;
+            const theta = angle * Math.PI / 180;
+
+            const vx0 = v0 * Math.cos(theta);
+            const vy0 = v0 * Math.sin(theta);
+            const t_flight = (2 * vy0) / g;
+            const max_x = vx0 * t_flight;
+            const max_y = (vy0 ** 2) / (2 * g);
+
+            document.getElementById("stats").innerHTML = 
+                `Max Range: ${max_x.toFixed(2)} m | Max Height: ${max_y.toFixed(2)} m | Flight Time: ${t_flight.toFixed(2)} s`;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGround();
+            animateProjectile(v0, angle, vx0, vy0, t_flight, airResistanceEnabled);
         }
 
-        function animate() {
-            requestAnimationFrame(animate);
-            let delta = clock.getDelta();
+        function drawGround() {
+            ctx.fillStyle = "green";
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+        }
 
-            if (position.y > 0) {
-                if (airResistance) {
-                    velocity.multiplyScalar(0.995);
+        function animateProjectile(v0, angle, vx0, vy0, t_flight, airResistanceEnabled) {
+            let t = 0;
+            const dt = 0.02; 
+            let x, y;
+            let vx = vx0, vy = vy0;
+
+            function drawFrame() {
+                t += dt;
+                if (t > t_flight || y < 0) return;
+                
+                if (airResistanceEnabled) {
+                    vx -= air_resistance * vx * dt;
+                    vy -= g * dt + air_resistance * vy * dt;
+                } else {
+                    vy -= g * dt;
                 }
-                velocity.addScaledVector(gravity, delta);
-                position.addScaledVector(velocity, delta);
-                ball.position.copy(position);
-            }
 
-            renderer.render(scene, camera);
+                x = vx0 * t;
+                y = vy0 * t - 0.5 * g * t ** 2;
+
+                let screenX = x * scale;  
+                let screenY = canvas.height - (y * scale) - 20; 
+
+                ctx.fillStyle = "blue";
+                ctx.beginPath();
+                ctx.arc(screenX, screenY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                requestAnimationFrame(drawFrame);
+            }
+            drawFrame();
         }
 
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-        });
-
-        init();
+        simulate();
     </script>
 </body>
 </html>
