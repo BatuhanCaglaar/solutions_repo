@@ -30,7 +30,7 @@ Substituting $ T $:
 $$ R = \frac{v_0^2 \sin(2\theta)}{g} $$
 
 
-
+![Range vs Angle Graph](image.png)
 
 
 This shows that **the range depends on the sine of twice the launch angle**.
@@ -61,6 +61,8 @@ def projectile_range(v0, g):
 projectile_range(20, 9.81)
 ```
 
+![Range and Angle of Projection](image-2.png)
+
 **Observations:**
 - The maximum range is achieved at **45°**.
 - For angles greater than 45°, the range decreases symmetrically.
@@ -69,9 +71,18 @@ projectile_range(20, 9.81)
 
 #### Practical Applications
 - **Sports:** Soccer, basketball, and javelin throw rely on optimal launch angles.
-- **Military:** Artillery uses similar principles to determine shell trajectories.
-- **Engineering:** Rocket launches consider projectile motion with atmospheric drag.
 
+![Basketball Shooting Angle](image-4.png)
+Basketball Shooting Angle
+
+- **Military:** Artillery uses similar principles to determine shell trajectories.
+
+![Cannonball Trajectories](image-3.png)
+Cannonball Trajectories
+
+- **Engineering:** Rocket launches consider projectile motion with atmospheric drag.
+![Falcon 9 Flight Trajectory](image-5.png)
+Falcon 9 Flight Trajectory
 ---
 
 #### Computational Implementation
@@ -102,3 +113,5 @@ plt.legend()
 plt.grid()
 plt.show()
 ```
+
+<iframe src="projectile_simulation.html" width="800" height="500"></iframe>
