@@ -1,92 +1,104 @@
 # Problem 1
 
-## Investigating the Range as a Function of the Angle of Projection
+### Investigating the Range as a Function of the Angle of Projection
 
-### Motivation
-Projectile motion, while seemingly simple, offers a rich playground for exploring fundamental principles of physics. The problem is straightforward: analyze how the range of a projectile depends on its angle of projection. Yet, beneath this simplicity lies a complex and versatile framework. The equations governing projectile motion involve both linear and quadratic relationships, making them accessible yet deeply insightful.
+####  Theoretical Foundation  
+Projectile motion follows Newton’s second law of motion:
 
-What makes this topic particularly compelling is the number of free parameters involved in these equations, such as initial velocity, gravitational acceleration, and launch height. These parameters give rise to a diverse set of solutions that can describe a wide array of real-world phenomena, from the arc of a soccer ball to the trajectory of a rocket.
+$$ F = ma $$
 
-## 1. Theoretical Foundation
+For a projectile launched at an initial velocity $ v_0 $ and angle $ \theta $, the motion can be decomposed into horizontal and vertical components:
 
-Projectile motion is governed by Newton’s Second Law. Considering only gravitational acceleration and assuming no air resistance, the equations of motion are derived as follows:
+- Horizontal motion:  
+  $$ x(t) = v_0 \cos(\theta) t $$
 
-Newton’s Second Law:
+- Vertical motion:  
+  $$ y(t) = v_0 \sin(\theta) t - \frac{1}{2} g t^2 $$
 
-$$ \mathbf{F} = m\mathbf{a} $$
+![Projectile Motion Diagram](image-1.png)
 
-With gravity as the only force:
+To find the time of flight ($ T $), we solve for when the projectile returns to the ground ($ y(T) = 0 $):
 
-$$ \mathbf{F} = -mg\hat{j}, \quad \mathbf{a} = -g\hat{j}. $$
+$$ T = \frac{2 v_0 \sin(\theta)}{g} $$
 
-Breaking into components:
+The range ($ R $) is given by:
 
-$$ a_x = 0, \quad a_y = -g. $$
+$$ R = v_0 \cos(\theta) T $$
 
-Integrating to find velocity:
+Substituting $ T $:
 
-$$ v_x = v_0 \cos\theta, \quad v_y = v_0 \sin\theta - gt. $$
+$$ R = \frac{v_0^2 \sin(2\theta)}{g} $$
 
-Integrating again to find position:
 
-$$ x(t) = v_0 \cos\theta \cdot t, $$
 
-$$ y(t) = v_0 \sin\theta \cdot t - \frac{1}{2} g t^2. $$
 
-The time of flight (when $ y = 0 $) is:
 
-$$ T = \frac{2 v_0 \sin\theta}{g}. $$
+This shows that **the range depends on the sine of twice the launch angle**.
 
-Thus, the range $ R $ is:
+---
 
-$$ R = \frac{v_0^2 \sin 2\theta}{g}. $$
-
-## 2. Analysis of the Range
-
-The range depends on the launch angle $ \theta $, initial velocity $ v_0 $, and gravitational acceleration $ g $. The maximum range occurs when:
-
-$$ \theta = 45^\circ. $$
-
-To investigate further, let's implement a computational approach.
-
-## 3. Implementation
-
-The following Python script simulates projectile motion and plots the range as a function of launch angle:
+#### Range Analysis
+Below is a Python script to analyze the dependency of range on the angle:
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 
 def projectile_range(v0, g):
-    angles = np.linspace(0, 90, num=100)  # Angles from 0 to 90 degrees
+    angles = np.linspace(0, 90, 100)  # Angles from 0° to 90°
     ranges = (v0**2 * np.sin(2 * np.radians(angles))) / g
     
     plt.figure(figsize=(8, 5))
-    plt.plot(angles, ranges, label="Range vs. Angle", color='b')
-    plt.axvline(x=45, linestyle='--', color='r', label='Max Range at 45°')
+    plt.plot(angles, ranges, label=f'Initial Velocity = {v0} m/s')
     plt.xlabel("Launch Angle (degrees)")
     plt.ylabel("Range (m)")
-    plt.title("Projectile Range as a Function of Launch Angle")
+    plt.title("Projectile Range vs Launch Angle")
     plt.legend()
     plt.grid()
     plt.show()
 
-# Example usage
-projectile_range(v0=20, g=9.81)
+# Example: Initial velocity = 20 m/s, g = 9.81 m/s²
+projectile_range(20, 9.81)
 ```
 
-## 4. Practical Applications
+**Observations:**
+- The maximum range is achieved at **45°**.
+- For angles greater than 45°, the range decreases symmetrically.
 
-This model applies to various real-world situations:
-- **Sports:** Understanding projectile motion helps optimize the trajectory of balls in soccer, basketball, and golf.
-- **Engineering:** Designing artillery shells and missiles for maximum range.
-- **Aerospace:** Calculating flight paths and rocket launches.
+---
 
-## 5. Limitations and Improvements
+#### Practical Applications
+- **Sports:** Soccer, basketball, and javelin throw rely on optimal launch angles.
+- **Military:** Artillery uses similar principles to determine shell trajectories.
+- **Engineering:** Rocket launches consider projectile motion with atmospheric drag.
 
-- The model assumes no air resistance. In reality, drag and wind can significantly alter the projectile's path.
-- Uneven terrain affects landing position and range.
-- Real-world applications require computational fluid dynamics for more accurate predictions.
+---
 
-### Conclusion
-The projectile motion equations provide a deep understanding of how range varies with launch angle. The computational model visually confirms that maximum range occurs at $ 45^\circ $. Future improvements could include drag forces for more realistic simulations.
+#### Computational Implementation
+To include air resistance, numerical simulation with differential equations is required:
+
+```python
+from scipy.integrate import solve_ivp
+
+def projectile_with_drag(t, y, v0, theta, g, k):
+    vx, vy = y[2], y[3]
+    v = np.sqrt(vx**2 + vy**2)
+    drag_x = -k * v * vx
+    drag_y = -k * v * vy - g
+    return [vx, vy, drag_x, drag_y]
+
+# Initial conditions
+v0, theta, g, k = 20, 45, 9.81, 0.01
+initial_conditions = [0, 0, v0 * np.cos(np.radians(theta)), v0 * np.sin(np.radians(theta))]
+t_eval = np.linspace(0, 5, 100)
+
+sol = solve_ivp(projectile_with_drag, [0, 5], initial_conditions, t_eval=t_eval, args=(v0, theta, g, k))
+
+plt.plot(sol.y[0], sol.y[1], label="With Air Resistance")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
+plt.title("Projectile Motion with Air Resistance")
+plt.legend()
+plt.grid()
+plt.show()
+```
