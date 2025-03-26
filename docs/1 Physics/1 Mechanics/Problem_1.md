@@ -18,9 +18,8 @@ For a projectile launched at an initial velocity $ v_0 $ and angle $ \theta $, t
 ![Projectile Motion Diagram](image-1.png)
 Projectile Motion Diagram
 
-\
-\
-\
+
+
 To find the time of flight ($ T $), we solve for when the projectile returns to the ground ($ y(T) = 0 $):
 
 $$ T = \frac{2 v_0 \sin(\theta)}{g} $$
