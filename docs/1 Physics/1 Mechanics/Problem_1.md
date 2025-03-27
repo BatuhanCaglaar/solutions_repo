@@ -9,10 +9,10 @@ $$ F = ma $$
 
 For a projectile launched at an initial velocity $ v_0 $ and angle $ \theta $, the motion can be decomposed into horizontal and vertical components:
 
-- Horizontal motion:  
+- Horizontal motion :  
   $$ x(t) = v_0 \cos(\theta) t $$
 
-- Vertical motion:  
+- Vertical motion :  
   $$ y(t) = v_0 \sin(\theta) t - \frac{1}{2} g t^2 $$
 
 ![Projectile Motion Diagram](image-1.png)
@@ -20,7 +20,7 @@ Projectile Motion Diagram
 
 
 
-To find the time of flight ($ T $), we solve for when the projectile returns to the ground ($ y(T) = 0 $):
+To find the time of flight $ T $, we solve for when the projectile returns to the ground $ y(T) = 0 $:
 
 $$ T = \frac{2 v_0 \sin(\theta)}{g} $$
 
