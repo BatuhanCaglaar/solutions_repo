@@ -4,15 +4,21 @@
 
 ### **Motivation**
 The forced damped pendulum is a **nonlinear dynamical system** that exhibits **complex behaviors** due to the interplay of:
+
 - **Damping forces** (energy loss)
+
 - **Restoring forces** (gravity)
+
 - **External driving forces** (periodic forcing)
+
 
 ![Forced Damped Pendulum Diagram](image-6.png)
 Forced Damped Pendulum Diagram
 
 This system transitions from **simple harmonic motion** to more **complex dynamics**, including:
+
 - **Resonance** (amplified oscillations)
+
 ![Resonance in Forced Damped Pendulum](image-7.png)
 
 Resonance in Forced Damped Pendulum
@@ -30,9 +36,13 @@ Quasiperiodic Motion in Forced Damped Pendulu
 Chaotic Attractor in Forced Damped Pendulum
 
 These behaviors are crucial for understanding real-world systems such as:
+
 - **Driven oscillators** in engineering
+
 - **Climate systems**
+
 - **Mechanical structures under periodic stress**
+
 
 ## **1. Theoretical Foundation**
 The equation of motion for a **forced damped pendulum** is given by:
@@ -42,12 +52,19 @@ $$
 $$
 
 where:
+
 - $ \theta(t) $ = angular displacement (radians)
+
 - $ \beta $ = damping coefficient
+
 - $ g $ = gravitational acceleration
+
 - $ l $ = pendulum length
+
 - $ A $ = external forcing amplitude
+
 - $ \omega $ = driving frequency
+
 
 ### **Small-Angle Approximation**
 For **small oscillations** ($\theta \approx 0$), we approximate:
