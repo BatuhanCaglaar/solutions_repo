@@ -101,6 +101,8 @@ The **forced damped pendulum** has several **real-world applications**:
 To study the pendulum numerically, we solve the **nonlinear differential equation** using Python.
 
 ### **Python Simulation Using Runge-Kutta**
+
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
