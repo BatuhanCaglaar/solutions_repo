@@ -120,43 +120,4 @@ To study the pendulum numerically, we solve the **nonlinear differential equatio
 
 
 
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp
-
-# Define parameters
-g = 9.81   # Gravity (m/s^2)
-l = 1.0    # Pendulum length (m)
-beta = 0.5  # Damping coefficient
-A = 1.2     # Driving force amplitude
-omega = 2.0 # Driving frequency
-
-# Define the equation of motion
-def forced_damped_pendulum(t, y):
-    theta, omega_dot = y
-    dtheta_dt = omega_dot
-    domega_dt = -beta * omega_dot - (g / l) * np.sin(theta) + (A / l) * np.cos(omega * t)
-    return [dtheta_dt, domega_dt]
-
-# Initial conditions
-theta_0 = 0.1  # Initial angle (radians)
-omega_0 = 0.0  # Initial angular velocity (radians/s)
-y0 = [theta_0, omega_0]
-
-# Time span
-t_span = (0, 20)
-t_eval = np.linspace(0, 20, 1000)
-
-# Solve the differential equation
-sol = solve_ivp(forced_damped_pendulum, t_span, y0, t_eval=t_eval, method='RK45')
-
-# Plot results
-plt.figure(figsize=(10,5))
-plt.plot(sol.t, sol.y[0], label="Theta (Angle)")
-plt.xlabel("Time (s)")
-plt.ylabel("Theta (radians)")
-plt.title("Forced Damped Pendulum Motion")
-plt.legend()
-plt.grid()
-plt.show()
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1oUQDO3SIscjDdHghi2r8wIFOpR6uL0b4?usp=sharing)
