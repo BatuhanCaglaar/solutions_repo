@@ -62,6 +62,9 @@ $$
 
 This resembles a **driven damped harmonic oscillator**, which can be solved analytically.
 
+![Small-Angle Approximation](image-10.png)
+Small-Angle Approximation Diagram
+
 ### **Resonance Condition**
 The system resonates when the **driving frequency** matches the **natural frequency**:
 
@@ -82,12 +85,23 @@ The system behavior depends on three key parameters:
    - Low damping → Large oscillations
    - High damping → Suppressed motion
 
+![Damped Pendulum Phase Diagram](image-11.png)
+Phase Diagram for Damping Effect
+
 2. **Driving amplitude ($A$)**
    - Small $A$ → Regular periodic motion
    - Large $A$ → Chaotic motion
 
+![Bifurcation Diagram](image-12.png)
+Bifurcation Diagram for Driving Amplitude
+
+
 3. **Driving frequency ($\omega$)**
    - At resonance ($\omega \approx \omega_{\text{res}}$), energy transfer is maximized.
+
+![Resonance Curves for Forced Oscillator](image-13.png)
+Resonance Curves for Forced Oscillator
+
    - Higher frequencies can induce chaos.
 
 ## **3. Practical Applications**
@@ -97,10 +111,13 @@ The **forced damped pendulum** has several **real-world applications**:
 - **Suspension bridges:** Avoids destructive resonance (e.g., Tacoma Narrows Bridge).
 - **Electrical circuits:** Analogous to driven RLC circuits.
 
+![Electrical Circuits and Pendulum](image-14.png)
+Electrical Circuits and Analogies to Pendulum
+
+
 ## **4. Computational Implementation**
 To study the pendulum numerically, we solve the **nonlinear differential equation** using Python.
 
-### **Python Simulation Using Runge-Kutta**
 
 
 ```python
