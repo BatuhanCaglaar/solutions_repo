@@ -62,6 +62,24 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 3</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-analysis-of-possible-trajectories">1. Analysis of Possible Trajectories</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-numerical-analysis-of-payload-path">2. Numerical Analysis of Payload Path</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#equations-of-motion">Equations of Motion</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#python-simulation-code">Python Simulation Code</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-orbital-insertion-re-entry-and-escape-scenarios">3. Orbital Insertion, Re-entry, and Escape Scenarios</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-simulation-and-visualization-tool">4. Simulation and Visualization Tool</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -174,6 +192,134 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-3">Problem 3</h1>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>When a payload is released from a moving rocket near Earth, its subsequent trajectory is governed by initial conditions and gravitational forces. Analyzing these trajectories is essential for applications such as satellite deployment, re-entry missions, and understanding orbital mechanics.</p>
+<hr/>
+<h2 id="1-analysis-of-possible-trajectories"><strong>1. Analysis of Possible Trajectories</strong></h2>
+<p>The path of a payload released near Earth can take various forms, primarily determined by its initial velocity relative to Earth's surface:</p>
+<ul>
+<li>
+<p><strong>Elliptical Orbit:</strong> If the payload's velocity is below Earth's escape velocity but sufficient to avoid atmospheric drag, it will enter an elliptical orbit around Earth.</p>
+</li>
+<li>
+<p><strong>Parabolic Trajectory:</strong> At exactly Earth's escape velocity (~11.2 km/s), the payload will follow a parabolic trajectory, escaping Earth's gravitational influence but not entering into orbit around another body.</p>
+</li>
+<li>
+<p><strong>Hyperbolic Trajectory:</strong> If the payload's velocity exceeds the escape velocity, it will follow a hyperbolic trajectory, escaping Earth's gravity with residual velocity.</p>
+</li>
+<li>
+<p><strong>Suborbital Trajectory:</strong> If the velocity is insufficient to achieve orbit, the payload will follow a suborbital path, re-entering the atmosphere and impacting Earth's surface.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="2-numerical-analysis-of-payload-path"><strong>2. Numerical Analysis of Payload Path</strong></h2>
+<p>To compute the payload's trajectory, we can numerically integrate the equations of motion under Earth's gravitational field. The primary forces to consider are:</p>
+<ul>
+<li>
+<p><strong>Gravitational Force:</strong> Given by Newton's law of gravitation.</p>
+</li>
+<li>
+<p><strong>Atmospheric Drag:</strong> Significant at lower altitudes, opposing the payload's motion.</p>
+</li>
+</ul>
+<h3 id="equations-of-motion"><strong>Equations of Motion</strong></h3>
+<p>The acceleration due to gravity at a distance <span class="arithmatex">\(r\)</span> from Earth's center is:</p>
+<div class="arithmatex">\[
+\mathbf{a}_g = -\frac{GM}{r^2} \hat{\mathbf{r}}
+\]</div>
+<p>The acceleration due to atmospheric drag is:</p>
+<div class="arithmatex">\[
+\mathbf{a}_d = -\frac{1}{2} C_d \frac{\rho v^2 A}{m} \hat{\mathbf{v}}
+\]</div>
+<p>The total acceleration <span class="arithmatex">\(\mathbf{a}\)</span> is the sum:</p>
+<div class="arithmatex">\[
+\mathbf{a} = \mathbf{a}_g + \mathbf{a}_d
+\]</div>
+<h3 id="python-simulation-code"><strong>Python Simulation Code</strong></h3>
+<pre><code class="language-python">import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+# Constants
+G = 6.67430e-11
+M = 5.972e24
+R = 6371e3
+C_d = 2.2
+A = 0.1
+m = 100
+
+def atmospheric_density(h):
+    rho_0 = 1.225
+    h_scale = 8500
+    return rho_0 * np.exp(-h / h_scale)
+
+def equations_of_motion(t, y):
+    x, y_pos, vx, vy = y
+    r = np.sqrt(x**2 + y_pos**2)
+    h = r - R
+    if h &lt; 0:
+        return [0, 0, 0, 0]
+    v = np.sqrt(vx**2 + vy**2)
+    rho = atmospheric_density(h)
+    a_g = -G * M / r**2
+    a_d = -0.5 * C_d * rho * v**2 * A / m
+    ax = a_g * (x / r) + a_d * (vx / v)
+    ay = a_g * (y_pos / r) + a_d * (vy / v)
+    return [vx, vy, ax, ay]
+
+# Initial Conditions
+altitude = 400e3
+speed = 7.8e3
+x0 = R + altitude
+y0 = 0
+vx0 = 0
+vy0 = speed
+y0_vec = [x0, y0, vx0, vy0]
+t_span = (0, 7200)
+
+solution = solve_ivp(equations_of_motion, t_span, y0_vec, method='RK45', max_step=10)
+
+x = solution.y[0]
+y = solution.y[1]
+
+plt.figure(figsize=(8, 8))
+plt.plot(x / 1e3, y / 1e3, label='Payload Trajectory')
+plt.xlabel('x (km)')
+plt.ylabel('y (km)')
+plt.title('Trajectory of a Freely Released Payload Near Earth')
+plt.legend()
+plt.grid(True)
+plt.axis('equal')
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="3-orbital-insertion-re-entry-and-escape-scenarios"><strong>3. Orbital Insertion, Re-entry, and Escape Scenarios</strong></h2>
+<ul>
+<li>
+<p><strong>Orbital Insertion:</strong> Requires velocity adjustment to achieve a stable orbit.</p>
+</li>
+<li>
+<p><strong>Re-entry:</strong> Occurs when velocity is too low to sustain orbit. Important for return missions.</p>
+</li>
+<li>
+<p><strong>Escape:</strong> Exceeds escape velocity, used in missions targeting other celestial bodies.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="4-simulation-and-visualization-tool"><strong>4. Simulation and Visualization Tool</strong></h2>
+<p>This tool models payload trajectories under Earth gravity:</p>
+<ul>
+<li>Uses Newtonian mechanics and atmospheric drag</li>
+<li>Simulates over time with adjustable initial conditions</li>
+<li>Visualizes trajectory in 2D Cartesian space</li>
+</ul>
+<p>This framework can be extended to:
+- Include different planets
+- Vary drag parameters
+- Test different payload masses and speeds</p>
+<hr/>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<p>Understanding the trajectories of freely released payloads is fundamental for mission planning in aerospace engineering and planetary science. Through mathematical analysis and simulation, this problem offers insight into gravitational dynamics and the real-world constraints of space travel.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">

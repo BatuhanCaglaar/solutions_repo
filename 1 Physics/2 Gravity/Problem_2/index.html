@@ -60,6 +60,46 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-definitions-of-cosmic-velocities">1. Definitions of Cosmic Velocities</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#first-cosmic-velocity-orbital-velocity">First Cosmic Velocity (Orbital Velocity)</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#second-cosmic-velocity-escape-velocity">Second Cosmic Velocity (Escape Velocity)</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#third-cosmic-velocity">Third Cosmic Velocity</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-mathematical-derivations-and-influencing-parameters">2. Mathematical Derivations and Influencing Parameters</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#first-cosmic-velocity-derivation">First Cosmic Velocity Derivation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#second-cosmic-velocity-derivation">Second Cosmic Velocity Derivation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#factors-affecting-cosmic-velocities">Factors Affecting Cosmic Velocities</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-calculations-for-earth-mars-and-jupiter">3. Calculations for Earth, Mars, and Jupiter</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#constants">Constants:</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#earth">Earth</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#mars">Mars</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#jupiter">Jupiter</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#visualization-with-python">Visualization with Python</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-importance-in-space-exploration">4. Importance in Space Exploration</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_3/">Problem 3</a>
@@ -174,6 +214,130 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>Understanding the various cosmic velocities is essential for space exploration and astrophysics. These velocities define the thresholds required for an object to achieve stable orbits, escape planetary gravitational fields, and even leave star systems. Mastery of these concepts enables the planning and execution of missions ranging from satellite deployments to interplanetary and interstellar travel.</p>
+<hr/>
+<h2 id="1-definitions-of-cosmic-velocities"><strong>1. Definitions of Cosmic Velocities</strong></h2>
+<h3 id="first-cosmic-velocity-orbital-velocity"><strong>First Cosmic Velocity (Orbital Velocity)</strong></h3>
+<p>The <strong>First Cosmic Velocity</strong> is the minimum speed an object must have to enter a stable circular orbit around a celestial body without additional propulsion. This velocity ensures that the object's centrifugal force balances the gravitational pull of the planet.</p>
+<p>For a body of mass <span class="arithmatex">\(M\)</span> and radius <span class="arithmatex">\(R\)</span>, the first cosmic velocity <span class="arithmatex">\(v_1\)</span> is:</p>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{GM}{R}}
+\]</div>
+<p>Where:
+- <span class="arithmatex">\(G\)</span> is the gravitational constant (<span class="arithmatex">\(6.67430 \times 10^{-11} \, \text{m}^3\,\text{kg}^{-1}\,\text{s}^{-2}\)</span>),
+- <span class="arithmatex">\(M\)</span> is the mass of the celestial body,
+- <span class="arithmatex">\(R\)</span> is the radius from the center of the celestial body to the object.</p>
+<hr/>
+<h3 id="second-cosmic-velocity-escape-velocity"><strong>Second Cosmic Velocity (Escape Velocity)</strong></h3>
+<p>The <strong>Second Cosmic Velocity</strong> is the minimum speed required for an object to break free from a celestial body's gravitational influence without further propulsion. It is derived from equating the kinetic energy to the gravitational potential energy:</p>
+<div class="arithmatex">\[
+v_2 = \sqrt{\frac{2GM}{R}}
+\]</div>
+<p>Note: <span class="arithmatex">\(v_2 = \sqrt{2} \cdot v_1\)</span></p>
+<hr/>
+<h3 id="third-cosmic-velocity"><strong>Third Cosmic Velocity</strong></h3>
+<p>The <strong>Third Cosmic Velocity</strong> is the minimum speed needed for an object to escape the gravitational influence of the Sun, effectively leaving the Solar System. This velocity depends on the object's position relative to the Sun and is influenced by both the Earth's orbital velocity and the additional speed required to overcome the Sun's gravity.</p>
+<hr/>
+<h2 id="2-mathematical-derivations-and-influencing-parameters"><strong>2. Mathematical Derivations and Influencing Parameters</strong></h2>
+<h3 id="first-cosmic-velocity-derivation"><strong>First Cosmic Velocity Derivation</strong></h3>
+<p>Balance of gravitational and centripetal forces:</p>
+<div class="arithmatex">\[
+\frac{GMm}{R^2} = \frac{mv^2}{R}
+\]</div>
+<p>Solving for <span class="arithmatex">\(v\)</span>:</p>
+<div class="arithmatex">\[
+v = \sqrt{\frac{GM}{R}}
+\]</div>
+<hr/>
+<h3 id="second-cosmic-velocity-derivation"><strong>Second Cosmic Velocity Derivation</strong></h3>
+<p>Setting kinetic energy equal to gravitational potential energy:</p>
+<div class="arithmatex">\[
+\frac{1}{2}mv^2 = \frac{GMm}{R}
+\]</div>
+<p>Solving for <span class="arithmatex">\(v\)</span>:</p>
+<div class="arithmatex">\[
+v = \sqrt{\frac{2GM}{R}}
+\]</div>
+<hr/>
+<h3 id="factors-affecting-cosmic-velocities"><strong>Factors Affecting Cosmic Velocities</strong></h3>
+<ul>
+<li><strong>Mass (<span class="arithmatex">\(M\)</span>):</strong> Larger mass → stronger gravity → higher velocity.</li>
+<li><strong>Radius (<span class="arithmatex">\(R\)</span>):</strong> Larger radius → weaker gravity → lower velocity.</li>
+</ul>
+<hr/>
+<h2 id="3-calculations-for-earth-mars-and-jupiter"><strong>3. Calculations for Earth, Mars, and Jupiter</strong></h2>
+<h3 id="constants">Constants:</h3>
+<ul>
+<li><span class="arithmatex">\(G = 6.67430 \times 10^{-11} \, \text{m}^3\,\text{kg}^{-1}\,\text{s}^{-2}\)</span></li>
+</ul>
+<hr/>
+<h3 id="earth"><strong>Earth</strong></h3>
+<ul>
+<li><span class="arithmatex">\(M = 5.972 \times 10^{24}\)</span> kg  </li>
+<li><span class="arithmatex">\(R = 6.371 \times 10^6\)</span> m</li>
+</ul>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{6.67430 \times 10^{-11} \cdot 5.972 \times 10^{24}}{6.371 \times 10^6}} \approx 7.91 \, \text{km/s}
+\]</div>
+<div class="arithmatex">\[
+v_2 = \sqrt{2} \cdot 7.91 \approx 11.2 \, \text{km/s}
+\]</div>
+<hr/>
+<h3 id="mars"><strong>Mars</strong></h3>
+<ul>
+<li><span class="arithmatex">\(M = 6.4171 \times 10^{23}\)</span> kg  </li>
+<li><span class="arithmatex">\(R = 3.3895 \times 10^6\)</span> m</li>
+</ul>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{6.67430 \times 10^{-11} \cdot 6.4171 \times 10^{23}}{3.3895 \times 10^6}} \approx 3.55 \, \text{km/s}
+\]</div>
+<div class="arithmatex">\[
+v_2 = \sqrt{2} \cdot 3.55 \approx 5.03 \, \text{km/s}
+\]</div>
+<hr/>
+<h3 id="jupiter"><strong>Jupiter</strong></h3>
+<ul>
+<li><span class="arithmatex">\(M = 1.898 \times 10^{27}\)</span> kg  </li>
+<li><span class="arithmatex">\(R = 6.9911 \times 10^7\)</span> m</li>
+</ul>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{6.67430 \times 10^{-11} \cdot 1.898 \times 10^{27}}{6.9911 \times 10^7}} \approx 42.1 \, \text{km/s}
+\]</div>
+<div class="arithmatex">\[
+v_2 = \sqrt{2} \cdot 42.1 \approx 59.5 \, \text{km/s}
+\]</div>
+<hr/>
+<h3 id="visualization-with-python"><strong>Visualization with Python</strong></h3>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+bodies = ['Earth', 'Mars', 'Jupiter']
+v1 = [7.91, 3.55, 42.1]
+v2 = [11.2, 5.03, 59.5]
+
+x = range(len(bodies))
+
+plt.figure(figsize=(10, 6))
+plt.bar(x, v1, width=0.4, label='First Cosmic Velocity', align='center')
+plt.bar(x, v2, width=0.4, label='Second Cosmic Velocity', align='edge')
+plt.xticks(x, bodies)
+plt.ylabel('Velocity (km/s)')
+plt.title('Cosmic Velocities for Celestial Bodies')
+plt.legend()
+plt.grid(True)
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="4-importance-in-space-exploration"><strong>4. Importance in Space Exploration</strong></h2>
+<ul>
+<li><strong>First Cosmic Velocity:</strong> Needed to place satellites into orbit.</li>
+<li><strong>Second Cosmic Velocity:</strong> Required to launch missions to other planets.</li>
+<li><strong>Third Cosmic Velocity:</strong> Used in missions aimed at exiting the Solar System.</li>
+</ul>
+<p>These principles form the basis of orbital mechanics and interplanetary mission planning.</p>
+<hr/>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<p>The cosmic velocities offer insight into how gravity controls motion in space. Understanding and calculating these values is essential for mission design and predicting object trajectories in astrophysics.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
