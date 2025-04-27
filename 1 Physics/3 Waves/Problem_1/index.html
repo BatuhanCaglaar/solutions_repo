@@ -68,6 +68,52 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-mathematical-background">1. Mathematical Background</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#single-wave-source">Single Wave Source</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#wave-superposition">Wave Superposition</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-problem-setup">2. Problem Setup</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#choosing-the-polygon">Choosing the Polygon</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#source-coordinates">Source Coordinates</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-computational-simulation">3. Computational Simulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#constants">Constants</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#python-code-implementation">Python Code Implementation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#grid-and-calculation-details">Grid and Calculation Details</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-detailed-analysis-of-patterns">4. Detailed Analysis of Patterns</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#constructive-interference">Constructive Interference</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#destructive-interference">Destructive Interference</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#symmetry-and-regularity">Symmetry and Regularity</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#physical-interpretation">Physical Interpretation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#time-dependence">Time Dependence</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5-extensions-and-improvements">5. Extensions and Improvements</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -174,6 +220,136 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>Interference occurs when two or more waves overlap, leading to the formation of new wave patterns. On a water surface, interference is visually striking and demonstrates fundamental wave properties such as constructive and destructive interference. Studying these patterns provides deep insights into wave mechanics and their real-world applications in fields such as acoustics, optics, and engineering.</p>
+<p>This project explores the behavior of waves from multiple coherent sources arranged at the vertices of a regular polygon. We aim to simulate and analyze the resulting interference patterns using both mathematical formulation and computational modeling.</p>
+<hr/>
+<h2 id="1-mathematical-background"><strong>1. Mathematical Background</strong></h2>
+<h3 id="single-wave-source"><strong>Single Wave Source</strong></h3>
+<p>The disturbance at any point <span class="arithmatex">\((x, y)\)</span> on a water surface due to a single wave source located at <span class="arithmatex">\((x_0, y_0)\)</span> is described by:</p>
+<div class="arithmatex">\[
+\eta(x, y, t) = \frac{A}{\sqrt{r}} \cos(kr - \omega t + \phi)
+\]</div>
+<p>where:
+- <span class="arithmatex">\(A\)</span> is the amplitude of the wave,
+- <span class="arithmatex">\(k = \frac{2\pi}{\lambda}\)</span> is the wave number,
+- <span class="arithmatex">\(\omega = 2\pi f\)</span> is the angular frequency,
+- <span class="arithmatex">\(r = \sqrt{(x - x_0)^2 + (y - y_0)^2}\)</span> is the distance from the source to point <span class="arithmatex">\((x, y)\)</span>,
+- <span class="arithmatex">\(\phi\)</span> is the initial phase of the wave.</p>
+<h3 id="wave-superposition"><strong>Wave Superposition</strong></h3>
+<p>If multiple sources emit coherent waves, the resulting displacement at any point is the <strong>sum</strong> of the individual displacements:</p>
+<div class="arithmatex">\[
+\eta_{\text{sum}}(x, y, t) = \sum_{i=1}^{N} \eta_i(x, y, t)
+\]</div>
+<p>where <span class="arithmatex">\(N\)</span> is the number of sources.</p>
+<p>Superposition leads to regions of:
+- <strong>Constructive Interference</strong>: Waves amplify each other.
+- <strong>Destructive Interference</strong>: Waves cancel each other.</p>
+<hr/>
+<h2 id="2-problem-setup"><strong>2. Problem Setup</strong></h2>
+<h3 id="choosing-the-polygon"><strong>Choosing the Polygon</strong></h3>
+<p>We select a <strong>square</strong> (4 sources) centered at the origin for its symmetry and simplicity. Each vertex is equidistant from the center, creating a predictable and analyzable interference pattern.</p>
+<h3 id="source-coordinates"><strong>Source Coordinates</strong></h3>
+<p>Vertices of a square of radius <span class="arithmatex">\(R\)</span>:
+- <span class="arithmatex">\((R, R)\)</span>
+- <span class="arithmatex">\((-R, R)\)</span>
+- <span class="arithmatex">\((-R, -R)\)</span>
+- <span class="arithmatex">\((R, -R)\)</span></p>
+<hr/>
+<h2 id="3-computational-simulation"><strong>3. Computational Simulation</strong></h2>
+<h3 id="constants"><strong>Constants</strong></h3>
+<ul>
+<li>Amplitude <span class="arithmatex">\(A = 1\)</span></li>
+<li>Wavelength <span class="arithmatex">\(\lambda = 1.0\)</span> m</li>
+<li>Frequency <span class="arithmatex">\(f = 1.0\)</span> Hz</li>
+<li>Radius <span class="arithmatex">\(R = 2.0\)</span> m</li>
+<li>Time snapshot <span class="arithmatex">\(t = 0\)</span></li>
+</ul>
+<h3 id="python-code-implementation"><strong>Python Code Implementation</strong></h3>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+A = 1
+lambda_wave = 1.0
+k = 2 * np.pi / lambda_wave
+f = 1.0
+omega = 2 * np.pi * f
+R = 2.0
+N = 4
+t = 0
+
+# Source positions (square)
+sources = [
+    (R, R),
+    (-R, R),
+    (-R, -R),
+    (R, -R)
+]
+
+# Grid definition
+x = np.linspace(-5, 5, 500)
+y = np.linspace(-5, 5, 500)
+X, Y = np.meshgrid(x, y)
+
+# Initialize the sum of waves
+eta_sum = np.zeros_like(X)
+
+# Superposition principle
+for (x0, y0) in sources:
+    r = np.sqrt((X - x0)**2 + (Y - y0)**2)
+    r = np.where(r == 0, 1e-10, r)
+    eta_sum += A / np.sqrt(r) * np.cos(k * r - omega * t)
+
+# Plotting
+plt.figure(figsize=(12, 10))
+plt.pcolormesh(X, Y, eta_sum, shading='auto', cmap='viridis')
+plt.colorbar(label='Displacement (m)')
+plt.title('Interference Pattern from Four Point Sources (Square Configuration)')
+plt.xlabel('x (meters)')
+plt.ylabel('y (meters)')
+plt.axis('equal')
+plt.show()
+</code></pre>
+<h3 id="grid-and-calculation-details"><strong>Grid and Calculation Details</strong></h3>
+<ul>
+<li>The grid is composed of 500x500 points covering <span class="arithmatex">\([-5, 5]\)</span> meters in both <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(y\)</span> directions.</li>
+<li>For each point on the grid, the displacement from each source is computed and summed.</li>
+</ul>
+<hr/>
+<h2 id="4-detailed-analysis-of-patterns"><strong>4. Detailed Analysis of Patterns</strong></h2>
+<h3 id="constructive-interference"><strong>Constructive Interference</strong></h3>
+<p>Occurs where waves from different sources meet in phase, resulting in amplified wave heights.</p>
+<h3 id="destructive-interference"><strong>Destructive Interference</strong></h3>
+<p>Occurs where waves meet out of phase, canceling each other and leading to minimal displacement.</p>
+<h3 id="symmetry-and-regularity"><strong>Symmetry and Regularity</strong></h3>
+<ul>
+<li>The pattern shows fourfold rotational symmetry due to the square arrangement.</li>
+<li>Interference fringes form a crisscross lattice structure.</li>
+</ul>
+<h3 id="physical-interpretation"><strong>Physical Interpretation</strong></h3>
+<ul>
+<li>Points equidistant from multiple sources experience enhanced constructive interference.</li>
+<li>Nodes (points of destructive interference) appear as grid-like intersections.</li>
+</ul>
+<h3 id="time-dependence"><strong>Time Dependence</strong></h3>
+<ul>
+<li>Though a single snapshot at <span class="arithmatex">\(t=0\)</span> is shown, the pattern dynamically evolves over time.</li>
+<li>The moving interference fringes reflect the wave's propagation.</li>
+</ul>
+<hr/>
+<h2 id="5-extensions-and-improvements"><strong>5. Extensions and Improvements</strong></h2>
+<ul>
+<li><strong>Use Different Polygons</strong>: Try triangle, pentagon, hexagon arrangements.</li>
+<li><strong>Vary Phase</strong>: Introduce different initial phases <span class="arithmatex">\(\phi\)</span> for sources.</li>
+<li><strong>Time Animation</strong>: Animate the evolution of interference patterns.</li>
+<li><strong>Non-Coherent Sources</strong>: Study effects of incoherence.</li>
+</ul>
+<hr/>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<p>The superposition of waves from multiple coherent sources results in complex and beautiful interference patterns. Analyzing these patterns deepens our understanding of wave behavior, such as constructive and destructive interference, and shows fundamental concepts applicable to light, sound, and water waves.</p>
+<p>Through mathematical modeling and computational simulation, we achieved a detailed visualization of interference on a water surface. This exercise bridges theoretical physics and visual understanding, showcasing the elegance of wave phenomena.</p>
+<hr/>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
