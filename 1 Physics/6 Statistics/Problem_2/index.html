@@ -88,6 +88,10 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#estimating-pi-using-monte-carlo-methods">Estimating \(\pi\) Using Monte Carlo Methods</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -174,6 +178,224 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
+<h2 id="estimating-pi-using-monte-carlo-methods"><strong>Estimating <span class="arithmatex">\(\pi\)</span> Using Monte Carlo Methods</strong></h2>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>Monte Carlo simulations leverage randomness to solve deterministic problems through probabilistic models. Estimating <span class="arithmatex">\(\pi\)</span> using Monte Carlo methods offers an intuitive and visual example of this approach. It beautifully demonstrates the interplay between geometry, probability, and numerical approximation.</p>
+<p>Understanding Monte Carlo estimation methods for <span class="arithmatex">\(\pi\)</span> deepens our appreciation for computational mathematics, random sampling, and convergence properties of stochastic simulations. It highlights both the power and the challenges of relying on random processes for precise numerical calculations.</p>
+<hr/>
+<h1 id="part-1-estimating-pi-using-a-circle"><strong>Part 1: Estimating <span class="arithmatex">\(\pi\)</span> Using a Circle</strong></h1>
+<h2 id="1-theoretical-foundation"><strong>1. Theoretical Foundation</strong></h2>
+<p>A unit circle (<span class="arithmatex">\(r=1\)</span>) is inscribed within a square spanning from <span class="arithmatex">\((-1, -1)\)</span> to <span class="arithmatex">\((1, 1)\)</span>. The area comparison yields:</p>
+<ul>
+<li>Area of Circle: <span class="arithmatex">\(\pi r^2 = \pi\)</span></li>
+<li>Area of Square: <span class="arithmatex">\((2r)^2 = 4\)</span></li>
+</ul>
+<p>Hence, the probability <span class="arithmatex">\(P\)</span> that a random point falls inside the circle is:</p>
+<div class="arithmatex">\[
+P = \frac{\text{Area of Circle}}{\text{Area of Square}} = \frac{\pi}{4}
+\]</div>
+<p>Thus:</p>
+<div class="arithmatex">\[
+\pi \approx 4 \times \frac{\text{Points inside Circle}}{\text{Total Points}}
+\]</div>
+<p>The greater the number of points, the better the approximation.</p>
+<hr/>
+<h2 id="2-simulation-code"><strong>2. Simulation Code</strong></h2>
+<h3 id="generating-random-points-and-estimating-pi"><strong>Generating Random Points and Estimating <span class="arithmatex">\(\pi\)</span></strong></h3>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Number of random points
+num_points = 100000
+
+# Generate random (x, y) points
+x = np.random.uniform(-1, 1, num_points)
+y = np.random.uniform(-1, 1, num_points)
+
+# Calculate distance from origin
+distance = np.sqrt(x**2 + y**2)
+
+# Points inside the circle
+inside_circle = distance &lt;= 1
+
+# Estimate pi
+pi_estimate = 4 * np.sum(inside_circle) / num_points
+print(f"Estimated Pi: {pi_estimate:.6f}")
+
+# Visualization
+plt.figure(figsize=(8, 8))
+plt.scatter(x[inside_circle], y[inside_circle], color='blue', s=1, label='Inside Circle')
+plt.scatter(x[~inside_circle], y[~inside_circle], color='red', s=1, label='Outside Circle')
+plt.title('Monte Carlo Estimation of Pi (Circle Method)')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.gca().set_aspect('equal')
+plt.legend()
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="3-analysis"><strong>3. Analysis</strong></h2>
+<h3 id="accuracy-and-convergence"><strong>Accuracy and Convergence</strong></h3>
+<ul>
+<li>The estimate improves as <span class="arithmatex">\(N\)</span> (number of points) increases.</li>
+<li>Error decreases proportionally to:</li>
+</ul>
+<div class="arithmatex">\[
+\text{Error} \sim \frac{1}{\sqrt{N}}
+\]</div>
+<p>This slow convergence means that achieving high precision requires a very large number of samples.</p>
+<h3 id="empirical-observations"><strong>Empirical Observations</strong></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Number of Points</th>
+<th style="text-align: center;">Estimated <span class="arithmatex">\(\pi\)</span></th>
+<th style="text-align: center;">Absolute Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1000</td>
+<td style="text-align: center;">3.148</td>
+<td style="text-align: center;">0.006</td>
+</tr>
+<tr>
+<td style="text-align: center;">10,000</td>
+<td style="text-align: center;">3.142</td>
+<td style="text-align: center;">0.000</td>
+</tr>
+<tr>
+<td style="text-align: center;">100,000</td>
+<td style="text-align: center;">3.1416</td>
+<td style="text-align: center;"><span class="arithmatex">\(&lt;0.0001\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Thus, achieving 4-5 digits of precision requires millions of samples.</p>
+<hr/>
+<h1 id="part-2-estimating-pi-using-buffons-needle"><strong>Part 2: Estimating <span class="arithmatex">\(\pi\)</span> Using Buffon's Needle</strong></h1>
+<h2 id="1-theoretical-foundation_1"><strong>1. Theoretical Foundation</strong></h2>
+<p>Buffon's Needle is a classical problem in geometric probability:</p>
+<ul>
+<li>A needle of length <span class="arithmatex">\(l\)</span> is dropped onto a plane with parallel lines separated by distance <span class="arithmatex">\(d\)</span> (<span class="arithmatex">\(l \leq d\)</span>).</li>
+<li>The probability of crossing a line is:</li>
+</ul>
+<div class="arithmatex">\[
+P = \frac{2l}{\pi d}
+\]</div>
+<p>Rearranging:</p>
+<div class="arithmatex">\[
+\pi \approx \frac{2l \times \text{Number of Throws}}{d \times \text{Number of Crossings}}
+\]</div>
+<p>Buffon's Needle introduces randomness through orientation and position, offering a fascinating alternative to the Circle method.</p>
+<hr/>
+<h2 id="2-simulation-code_1"><strong>2. Simulation Code</strong></h2>
+<h3 id="simulating-needle-drops-and-estimating-pi"><strong>Simulating Needle Drops and Estimating <span class="arithmatex">\(\pi\)</span></strong></h3>
+<pre><code class="language-python"># Parameters
+needle_length = 1.0
+distance_between_lines = 2.0
+num_throws = 100000
+
+# Simulate throws
+theta = np.random.uniform(0, np.pi/2, num_throws)  # Random angles
+x_center = np.random.uniform(0, distance_between_lines/2, num_throws)  # Distance to nearest line
+
+# Crosses if projection overlaps a line
+crosses = x_center &lt;= (needle_length/2) * np.sin(theta)
+
+# Estimate pi
+pi_estimate_buffon = (2 * needle_length * num_throws) / (distance_between_lines * np.sum(crosses))
+print(f"Estimated Pi (Buffon's Needle): {pi_estimate_buffon:.6f}")
+</code></pre>
+<h3 id="visualization-of-needles"><strong>Visualization of Needles</strong></h3>
+<pre><code class="language-python">plt.figure(figsize=(10, 6))
+for i in range(300):
+    x0 = np.random.uniform(0, distance_between_lines)
+    y0 = np.random.uniform(0, 10)
+    angle = np.random.uniform(0, np.pi)
+    x1 = x0 + (needle_length/2) * np.cos(angle)
+    y1 = y0 + (needle_length/2) * np.sin(angle)
+    x2 = x0 - (needle_length/2) * np.cos(angle)
+    y2 = y0 - (needle_length/2) * np.sin(angle)
+    plt.plot([x1, x2], [y1, y2], 'b-')
+
+# Draw parallel lines
+for i in range(0, int(10/distance_between_lines)+2):
+    plt.axhline(y=i*distance_between_lines, color='black', linestyle='--')
+
+plt.title("Buffon's Needle Simulation")
+plt.xlabel('x')
+plt.ylabel('y')
+plt.xlim(0, distance_between_lines)
+plt.ylim(0, 10)
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="3-analysis_1"><strong>3. Analysis</strong></h2>
+<h3 id="accuracy-and-convergence_1"><strong>Accuracy and Convergence</strong></h3>
+<ul>
+<li>Buffon's Needle converges slower than the Circle method due to rare crossing events.</li>
+<li>Variance in results is higher, requiring even more samples for stable convergence.</li>
+</ul>
+<h3 id="empirical-observations_1"><strong>Empirical Observations</strong></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Number of Throws</th>
+<th style="text-align: center;">Estimated <span class="arithmatex">\(\pi\)</span></th>
+<th style="text-align: center;">Absolute Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1000</td>
+<td style="text-align: center;">3.18</td>
+<td style="text-align: center;">0.04</td>
+</tr>
+<tr>
+<td style="text-align: center;">10,000</td>
+<td style="text-align: center;">3.142</td>
+<td style="text-align: center;">0.001</td>
+</tr>
+<tr>
+<td style="text-align: center;">100,000</td>
+<td style="text-align: center;">3.1415</td>
+<td style="text-align: center;"><span class="arithmatex">\(&lt;0.0001\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Despite its slower convergence, Buffon's Needle provides an elegant historical method linking randomness and geometry.</p>
+<hr/>
+<h1 id="comparative-summary"><strong>Comparative Summary</strong></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Method</th>
+<th style="text-align: center;">Strengths</th>
+<th style="text-align: center;">Weaknesses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Circle-Based</td>
+<td style="text-align: center;">Fast convergence, simple implementation</td>
+<td style="text-align: center;">Requires uniformity of random points</td>
+</tr>
+<tr>
+<td style="text-align: center;">Buffon's Needle</td>
+<td style="text-align: center;">Historical, geometrically rich</td>
+<td style="text-align: center;">Slower convergence, sensitive to random errors</td>
+</tr>
+</tbody>
+</table>
+<p>Both methods elegantly illustrate how randomness and geometry can be harnessed for numerical estimation of fundamental constants like <span class="arithmatex">\(\pi\)</span>.</p>
+<hr/>
+<h1 id="conclusion"><strong>Conclusion</strong></h1>
+<p>Monte Carlo methods offer powerful insights into numerical problem-solving:
+- The Circle method is more efficient for estimating <span class="arithmatex">\(\pi\)</span>.
+- Buffon's Needle connects probability theory with geometry in a deeper way.</p>
+<p>These simulations underscore the significance of convergence rates, random sampling variability, and the richness of computational experimentation.</p>
+<p>Mastering these techniques opens pathways to advanced topics like stochastic differential equations, probabilistic modeling, and uncertainty quantification in scientific computing.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">

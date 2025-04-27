@@ -86,6 +86,58 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#exploring-the-central-limit-theorem-through-simulations">Exploring the Central Limit Theorem through Simulations</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-simulating-sampling-distributions">1. Simulating Sampling Distributions</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#generating-populations">Generating Populations</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-sampling-and-visualization">2. Sampling and Visualization</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#sampling-process">Sampling Process</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-parameter-exploration">3. Parameter Exploration</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#impact-of-sample-size">Impact of Sample Size</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#mathematical-confirmation">Mathematical Confirmation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#effect-of-population-variance">Effect of Population Variance</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-practical-applications">4. Practical Applications</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#estimation-and-confidence-intervals">Estimation and Confidence Intervals</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#quality-control-in-manufacturing">Quality Control in Manufacturing</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#financial-modeling">Financial Modeling</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#polling-and-surveys">Polling and Surveys</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5-advanced-topics-and-extensions">5. Advanced Topics and Extensions</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#skewness-and-kurtosis-analysis">Skewness and Kurtosis Analysis</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#convergence-rates">Convergence Rates</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#visual-comparison">Visual Comparison</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#heavy-tailed-distributions">Heavy-Tailed Distributions</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
@@ -174,6 +226,142 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h2 id="exploring-the-central-limit-theorem-through-simulations"><strong>Exploring the Central Limit Theorem through Simulations</strong></h2>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>The Central Limit Theorem (CLT) is one of the most powerful and important results in all of statistics. It states that the distribution of the sample mean approaches a normal distribution as the sample size becomes large, regardless of the population's original distribution (provided the population has finite variance).</p>
+<p>Understanding and visualizing the CLT is essential for grasping concepts such as confidence intervals, hypothesis testing, and the foundations of inferential statistics. By simulating different distributions and observing the behavior of sample means, we can deeply appreciate the practical implications of this theorem.</p>
+<hr/>
+<h2 id="1-simulating-sampling-distributions"><strong>1. Simulating Sampling Distributions</strong></h2>
+<p>We will consider three fundamentally different population distributions:</p>
+<ul>
+<li><strong>Uniform Distribution</strong>: All values within an interval are equally likely.</li>
+<li><strong>Exponential Distribution</strong>: Models time between events in a Poisson process, highly skewed.</li>
+<li><strong>Binomial Distribution</strong>: Discrete distribution modeling the number of successes in a fixed number of independent Bernoulli trials.</li>
+</ul>
+<h3 id="generating-populations"><strong>Generating Populations</strong></h3>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set random seed for reproducibility
+np.random.seed(42)
+
+# Population size
+population_size = 100000
+
+# Define populations
+uniform_pop = np.random.uniform(0, 10, size=population_size)
+exponential_pop = np.random.exponential(2, size=population_size)
+binomial_pop = np.random.binomial(n=10, p=0.5, size=population_size)
+</code></pre>
+<hr/>
+<h2 id="2-sampling-and-visualization"><strong>2. Sampling and Visualization</strong></h2>
+<p>We will take repeated random samples of varying sizes and compute their means.</p>
+<h3 id="sampling-process"><strong>Sampling Process</strong></h3>
+<pre><code class="language-python">def simulate_sampling(population, sample_size, num_samples=1000):
+    means = [np.mean(np.random.choice(population, size=sample_size)) for _ in range(num_samples)]
+    return means
+
+sample_sizes = [5, 10, 30, 50]
+
+populations = {
+    "Uniform": uniform_pop,
+    "Exponential": exponential_pop,
+    "Binomial": binomial_pop
+}
+
+for pop_name, pop_data in populations.items():
+    plt.figure(figsize=(18, 10))
+    for i, size in enumerate(sample_sizes, 1):
+        means = simulate_sampling(pop_data, size)
+        plt.subplot(2, 2, i)
+        sns.histplot(means, kde=True, stat="density", bins=30, color="skyblue")
+        plt.title(f"{pop_name} Population - Sample Size {size}")
+        plt.xlabel("Sample Mean")
+        plt.ylabel("Density")
+    plt.suptitle(f"Sampling Distribution of Sample Means ({pop_name} Population)", fontsize=18)
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.show()
+</code></pre>
+<hr/>
+<h2 id="3-parameter-exploration"><strong>3. Parameter Exploration</strong></h2>
+<h3 id="impact-of-sample-size"><strong>Impact of Sample Size</strong></h3>
+<ul>
+<li><strong>Small Sample Sizes (e.g., 5):</strong> Sampling distributions retain the skewness or uniformity of the original population.</li>
+<li><strong>Moderate Sample Sizes (e.g., 30):</strong> Distributions start to resemble a normal curve.</li>
+<li><strong>Large Sample Sizes (e.g., 50+):</strong> Distributions are visibly normal even from heavily skewed populations.</li>
+</ul>
+<h3 id="mathematical-confirmation"><strong>Mathematical Confirmation</strong></h3>
+<p>The variance of the sample mean decreases with sample size:</p>
+<div class="arithmatex">\[
+\sigma_{\bar{x}}^2 = \frac{\sigma^2}{n}
+\]</div>
+<p>where:
+- <span class="arithmatex">\(\sigma^2\)</span> is the population variance,
+- <span class="arithmatex">\(n\)</span> is the sample size.</p>
+<p>Thus, as <span class="arithmatex">\(n\)</span> increases, the spread of the sampling distribution shrinks, leading to tighter, more concentrated distributions around the population mean.</p>
+<h3 id="effect-of-population-variance"><strong>Effect of Population Variance</strong></h3>
+<ul>
+<li>Populations with higher variance yield wider sampling distributions.</li>
+<li>Larger samples mitigate this effect by reducing the sampling variance.</li>
+</ul>
+<hr/>
+<h2 id="4-practical-applications"><strong>4. Practical Applications</strong></h2>
+<p>The Central Limit Theorem underpins many real-world statistical practices:</p>
+<h3 id="estimation-and-confidence-intervals"><strong>Estimation and Confidence Intervals</strong></h3>
+<ul>
+<li>Allows statisticians to use sample means to estimate population means.</li>
+<li>Provides theoretical justification for constructing confidence intervals.</li>
+</ul>
+<h3 id="quality-control-in-manufacturing"><strong>Quality Control in Manufacturing</strong></h3>
+<ul>
+<li>Sample means are monitored to detect deviations from production norms.</li>
+<li>CLT ensures that the behavior of sample means follows predictable patterns.</li>
+</ul>
+<h3 id="financial-modeling"><strong>Financial Modeling</strong></h3>
+<ul>
+<li>Asset returns are often modeled assuming normality, an assumption justified by CLT for aggregated returns.</li>
+</ul>
+<h3 id="polling-and-surveys"><strong>Polling and Surveys</strong></h3>
+<ul>
+<li>Sample means and proportions from surveys are treated as approximately normal, enabling accurate inference about the larger population.</li>
+</ul>
+<hr/>
+<h2 id="5-advanced-topics-and-extensions"><strong>5. Advanced Topics and Extensions</strong></h2>
+<h3 id="skewness-and-kurtosis-analysis"><strong>Skewness and Kurtosis Analysis</strong></h3>
+<ul>
+<li>Measure the skewness and kurtosis of sampling distributions.</li>
+<li>Quantify how "normal" the sampling distribution becomes with increasing <span class="arithmatex">\(n\)</span>.</li>
+</ul>
+<h3 id="convergence-rates"><strong>Convergence Rates</strong></h3>
+<ul>
+<li>Highly skewed distributions require larger <span class="arithmatex">\(n\)</span> for convergence.</li>
+<li>Symmetrical distributions (e.g., uniform) converge faster.</li>
+</ul>
+<h3 id="visual-comparison"><strong>Visual Comparison</strong></h3>
+<p>Overlay the sampling histograms with a true normal curve:</p>
+<pre><code class="language-python">from scipy.stats import norm
+
+mean = np.mean(means)
+std = np.std(means)
+x = np.linspace(min(means), max(means), 1000)
+y = norm.pdf(x, mean, std)
+
+plt.plot(x, y, color='red', label='Normal PDF')
+plt.legend()
+</code></pre>
+<h3 id="heavy-tailed-distributions"><strong>Heavy-Tailed Distributions</strong></h3>
+<ul>
+<li>Explore cases where the population has infinite variance (e.g., Cauchy distribution) to observe the failure of the CLT.</li>
+</ul>
+<hr/>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<p>Through computational simulations:
+- We observed the Central Limit Theorem's power and universality.
+- Different populations (uniform, exponential, binomial) all produced approximately normal sampling distributions as sample sizes increased.
+- Larger sample sizes improved the approximation to normality.</p>
+<p>Thus, the CLT forms the backbone of many inferential techniques in statistics, making it one of the most celebrated results in mathematics.</p>
+<p>Understanding and visualizing it through simulations solidifies foundational knowledge crucial for any scientific discipline.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
