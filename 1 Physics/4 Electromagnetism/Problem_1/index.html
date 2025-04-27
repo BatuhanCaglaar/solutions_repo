@@ -74,6 +74,58 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#simulating-the-effects-of-the-lorentz-force">Simulating the Effects of the Lorentz Force</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-exploration-of-applications">1. Exploration of Applications</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2-mathematical-formulation">2. Mathematical Formulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#equation-of-motion">Equation of Motion</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#special-cases">Special Cases</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-python-simulation">3. Python Simulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#constants-and-initial-setup">Constants and Initial Setup</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#equation-of-motion-and-solver">Equation of Motion and Solver</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#visualization">Visualization</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-detailed-parameter-exploration">4. Detailed Parameter Exploration</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#varying-magnetic-field-strength-b">Varying Magnetic Field Strength (\(B\))</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#varying-electric-field-strength-e">Varying Electric Field Strength (\(E\))</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-initial-velocity-mathbfv">Changing Initial Velocity (\(\mathbf{v}\))</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-charge-and-mass-q-m">Changing Charge and Mass (\(q\), \(m\))</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#5-interpretation-and-real-world-applications">5. Interpretation and Real-World Applications</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#cyclotron-motion">Cyclotron Motion</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#magnetic-confinement">Magnetic Confinement</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#space-physics">Space Physics</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#mass-spectrometry">Mass Spectrometry</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#6-future-extensions">6. Future Extensions</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -174,6 +226,170 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h2 id="simulating-the-effects-of-the-lorentz-force"><strong>Simulating the Effects of the Lorentz Force</strong></h2>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>The Lorentz force governs the motion of charged particles under the influence of electric and magnetic fields. It is defined by the equation:</p>
+<div class="arithmatex">\[
+\mathbf{F} = q\mathbf{E} + q\mathbf{v} \times \mathbf{B}
+\]</div>
+<p>where:
+- <span class="arithmatex">\(q\)</span> is the particle's charge,
+- <span class="arithmatex">\(\mathbf{E}\)</span> is the electric field vector,
+- <span class="arithmatex">\(\mathbf{v}\)</span> is the particle's velocity vector,
+- <span class="arithmatex">\(\mathbf{B}\)</span> is the magnetic field vector.</p>
+<p>Understanding this force is crucial in plasma physics, particle accelerators, astrophysical processes, and numerous technological applications. Simulating the motion of particles under these forces provides valuable insights into behaviors like circular motion, helical paths, drift in crossed fields, and confinement mechanisms.</p>
+<hr/>
+<h2 id="1-exploration-of-applications"><strong>1. Exploration of Applications</strong></h2>
+<p>The Lorentz force is critical in many real-world systems:</p>
+<ul>
+<li><strong>Particle Accelerators:</strong> Charged particles are steered and accelerated along desired trajectories using strong magnetic and electric fields.</li>
+<li><strong>Mass Spectrometers:</strong> Particles are separated based on their mass-to-charge ratio by exploiting their deflections in magnetic fields.</li>
+<li><strong>Plasma Confinement:</strong> Magnetic fields trap plasma in devices like tokamaks, essential for nuclear fusion research.</li>
+<li><strong>Astrophysics:</strong> Cosmic rays, solar winds, and magnetic reconnection events are governed by Lorentz dynamics.</li>
+<li><strong>Magnetohydrodynamics:</strong> The study of magnetic properties of conducting fluids, vital in astrophysics and engineering.</li>
+</ul>
+<p>In each system, precise control and understanding of particle motion under electromagnetic forces are fundamental for successful operation and innovation.</p>
+<hr/>
+<h2 id="2-mathematical-formulation"><strong>2. Mathematical Formulation</strong></h2>
+<h3 id="equation-of-motion"><strong>Equation of Motion</strong></h3>
+<p>The Newtonian equation for a charged particle:</p>
+<div class="arithmatex">\[
+\mathbf{F} = m\mathbf{a} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})
+\]</div>
+<p>Thus, the acceleration <span class="arithmatex">\(\mathbf{a}\)</span> is:</p>
+<div class="arithmatex">\[
+\mathbf{a} = \frac{q}{m}(\mathbf{E} + \mathbf{v} \times \mathbf{B})
+\]</div>
+<p>We can solve this second-order ordinary differential equation numerically using methods like Runge-Kutta.</p>
+<h3 id="special-cases"><strong>Special Cases</strong></h3>
+<ul>
+<li><strong>Only Magnetic Field:</strong> Circular or helical motion depending on the initial velocity direction.</li>
+<li><strong>Only Electric Field:</strong> Uniform acceleration in the direction of the field.</li>
+<li><strong>Crossed <span class="arithmatex">\(\mathbf{E}\)</span> and <span class="arithmatex">\(\mathbf{B}\)</span> Fields:</strong> Particles experience a drift motion known as the <span class="arithmatex">\(\mathbf{E} \times \mathbf{B}\)</span> drift.</li>
+</ul>
+<hr/>
+<h2 id="3-python-simulation"><strong>3. Python Simulation</strong></h2>
+<h3 id="constants-and-initial-setup"><strong>Constants and Initial Setup</strong></h3>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+# Particle properties
+q = 1.6e-19   # Charge (C)
+m = 9.11e-31  # Mass (kg) - electron mass
+
+# Fields
+E = np.array([0, 0, 0])  # Electric field (V/m)
+B = np.array([0, 0, 1])  # Magnetic field (T)
+
+# Initial conditions
+r0 = np.array([0, 0, 0])
+v0 = np.array([1e6, 0, 0])  # Initial velocity (m/s)
+y0 = np.concatenate((r0, v0))
+
+# Time settings
+t_span = (0, 1e-7)
+t_eval = np.linspace(t_span[0], t_span[1], 1000)
+</code></pre>
+<h3 id="equation-of-motion-and-solver"><strong>Equation of Motion and Solver</strong></h3>
+<pre><code class="language-python">def lorentz_force(t, y):
+    r = y[:3]
+    v = y[3:]
+    a = (q/m) * (E + np.cross(v, B))
+    return np.concatenate((v, a))
+
+# Solve the ODE
+solution = solve_ivp(lorentz_force, t_span, y0, t_eval=t_eval)
+
+x, y, z = solution.y[0], solution.y[1], solution.y[2]
+</code></pre>
+<h3 id="visualization"><strong>Visualization</strong></h3>
+<pre><code class="language-python">fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot(x, y, z)
+ax.set_xlabel('x (m)')
+ax.set_ylabel('y (m)')
+ax.set_zlabel('z (m)')
+ax.set_title('Particle Trajectory under Lorentz Force')
+plt.show()
+</code></pre>
+<hr/>
+<h2 id="4-detailed-parameter-exploration"><strong>4. Detailed Parameter Exploration</strong></h2>
+<h3 id="varying-magnetic-field-strength-b"><strong>Varying Magnetic Field Strength (<span class="arithmatex">\(B\)</span>)</strong></h3>
+<ul>
+<li>Increasing <span class="arithmatex">\(B\)</span> reduces the Larmor radius:</li>
+</ul>
+<div class="arithmatex">\[
+R_L = \frac{mv}{qB}
+\]</div>
+<ul>
+<li>Trajectories become tighter with stronger magnetic fields.</li>
+</ul>
+<h3 id="varying-electric-field-strength-e"><strong>Varying Electric Field Strength (<span class="arithmatex">\(E\)</span>)</strong></h3>
+<ul>
+<li>Adding <span class="arithmatex">\(E\)</span> induces an <span class="arithmatex">\(\mathbf{E} \times \mathbf{B}\)</span> drift:</li>
+</ul>
+<div class="arithmatex">\[
+\mathbf{v}_d = \frac{\mathbf{E} \times \mathbf{B}}{B^2}
+\]</div>
+<ul>
+<li>The particle drifts perpendicular to both <span class="arithmatex">\(\mathbf{E}\)</span> and <span class="arithmatex">\(\mathbf{B}\)</span>.</li>
+</ul>
+<h3 id="changing-initial-velocity-mathbfv"><strong>Changing Initial Velocity (<span class="arithmatex">\(\mathbf{v}\)</span>)</strong></h3>
+<ul>
+<li>Alters the pitch and radius of helical motion.</li>
+<li>Purely perpendicular velocity leads to circular motion.</li>
+<li>Adding parallel velocity leads to helical motion.</li>
+</ul>
+<h3 id="changing-charge-and-mass-q-m"><strong>Changing Charge and Mass (<span class="arithmatex">\(q\)</span>, <span class="arithmatex">\(m\)</span>)</strong></h3>
+<ul>
+<li>Heavier particles have larger Larmor radii.</li>
+<li>Particles with different signs of charge move in opposite directions.</li>
+</ul>
+<hr/>
+<h2 id="5-interpretation-and-real-world-applications"><strong>5. Interpretation and Real-World Applications</strong></h2>
+<h3 id="cyclotron-motion"><strong>Cyclotron Motion</strong></h3>
+<ul>
+<li>Charged particles move in circles in a perpendicular magnetic field.</li>
+<li>Basis for cyclotron particle accelerators.</li>
+</ul>
+<h3 id="magnetic-confinement"><strong>Magnetic Confinement</strong></h3>
+<ul>
+<li>Used in fusion reactors (e.g., Tokamaks).</li>
+<li>Magnetic fields trap high-energy plasma.</li>
+</ul>
+<h3 id="space-physics"><strong>Space Physics</strong></h3>
+<ul>
+<li>Explains behaviors of charged particles in Earth's magnetosphere.</li>
+<li>Auroras caused by particle collisions due to Lorentz force dynamics.</li>
+</ul>
+<h3 id="mass-spectrometry"><strong>Mass Spectrometry</strong></h3>
+<ul>
+<li>Ions are separated based on their radius of curvature in a magnetic field.</li>
+</ul>
+<hr/>
+<h2 id="6-future-extensions"><strong>6. Future Extensions</strong></h2>
+<ul>
+<li><strong>Non-Uniform Fields:</strong></li>
+<li>Simulate position-dependent <span class="arithmatex">\(\mathbf{E}(\mathbf{r})\)</span> and <span class="arithmatex">\(\mathbf{B}(\mathbf{r})\)</span>.</li>
+<li><strong>Relativistic Effects:</strong></li>
+<li>Implement special relativity for near-light-speed particles.</li>
+<li><strong>Many-Particle Systems:</strong></li>
+<li>Include Coulomb forces between particles.</li>
+<li><strong>Plasma Simulation:</strong></li>
+<li>Simulate collective plasma behaviors under electromagnetic fields.</li>
+<li><strong>Collision Effects:</strong></li>
+<li>Add random scattering events for realism.</li>
+</ul>
+<hr/>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<p>Simulating the Lorentz force provides profound insights into how electric and magnetic fields control the motion of charged particles. From basic circular motion to complex drift behaviors, these principles underpin critical technologies and natural phenomena.</p>
+<p>Through numerical simulation and visualization, one gains an intuitive understanding of:
+- Circular and helical trajectories
+- Larmor radius dependence
+- E-cross-B drift</p>
+<p>This knowledge is essential for advancing fields ranging from particle physics to astrophysical plasma research, demonstrating the unifying power of fundamental physical laws.</p>
+<hr/>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
