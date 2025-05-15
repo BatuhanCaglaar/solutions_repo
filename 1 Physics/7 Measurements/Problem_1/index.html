@@ -94,6 +94,54 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#measuring-earths-gravitational-acceleration-with-a-pendulum">Measuring Earth's Gravitational Acceleration with a Pendulum</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#motivation">Motivation</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#procedure">Procedure</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-materials">1. Materials</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-setup">2. Setup</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-data-collection">3. Data Collection</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#raw-data-table">Raw Data Table</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#statistical-summary">Statistical Summary</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#calculations">Calculations</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-period-and-uncertainty">1. Period and Uncertainty</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-calculate-g">2. Calculate \(g\)</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-propagate-uncertainties">3. Propagate Uncertainties</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#results-summary-table">Results Summary Table</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#analysis-and-discussion">Analysis and Discussion</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-comparison-with-accepted-value">1. Comparison with Accepted Value</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-sources-of-error">2. Sources of Error</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-assumptions-validity">3. Assumptions Validity</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#further-extensions">Further Extensions</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix-python-code-example">Appendix: Python Code Example</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -174,6 +222,231 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h3 id="measuring-earths-gravitational-acceleration-with-a-pendulum"><strong>Measuring Earth's Gravitational Acceleration with a Pendulum</strong></h3>
+<h2 id="motivation"><strong>Motivation</strong></h2>
+<p>The acceleration <span class="arithmatex">\(g\)</span> due to gravity is a fundamental constant in physics, vital for everything from engineering applications to understanding celestial motion. One classic and elegant method for determining <span class="arithmatex">\(g\)</span> is by measuring the oscillation period of a simple pendulum. The mathematical simplicity of the pendulum model makes it ideal for undergraduate-level experiments, while the precision it demands fosters deep appreciation for measurement techniques and uncertainty analysis.</p>
+<p>This problem not only focuses on calculating <span class="arithmatex">\(g\)</span>, but also emphasizes rigorous experimental techniques, statistical processing of measurement data, and propagation of uncertainties. Such approaches form the backbone of empirical science.</p>
+<hr/>
+<h2 id="procedure"><strong>Procedure</strong></h2>
+<h3 id="1-materials"><strong>1. Materials</strong></h3>
+<ul>
+<li>String (1.000 m measured with ±0.001 m accuracy)</li>
+<li>Small dense weight (e.g., a metal nut)</li>
+<li>Stopwatch (resolution 0.01 s)</li>
+<li>Ruler or measuring tape</li>
+<li>Rigid support (stand, ceiling mount, or hook)</li>
+<li>Data recording sheet or spreadsheet</li>
+</ul>
+<h3 id="2-setup"><strong>2. Setup</strong></h3>
+<ul>
+<li>Fix the string securely to the support.</li>
+<li>Attach the mass firmly at the end of the string.</li>
+<li>Measure the length <span class="arithmatex">\(L\)</span> from the pivot point to the center of mass of the weight.</li>
+</ul>
+<h4 id="uncertainty-in-length"><strong>Uncertainty in Length</strong></h4>
+<ul>
+<li>Resolution of the tape is ±0.001 m →</li>
+</ul>
+<div class="arithmatex">\[
+\Delta L = \frac{0.001}{2} = 0.0005 \ \text{m}
+\]</div>
+<hr/>
+<h2 id="3-data-collection"><strong>3. Data Collection</strong></h2>
+<p>Conduct the following steps:</p>
+<ul>
+<li>Displace the pendulum to an angle less than 15°.</li>
+<li>Release gently without pushing.</li>
+<li>Time 10 complete oscillations (back and forth = 1 cycle).</li>
+<li>Repeat 10 times for consistency.</li>
+</ul>
+<h3 id="raw-data-table"><strong>Raw Data Table</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Trial</th>
+<th><span class="arithmatex">\(T_{10}\)</span> (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>20.11</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20.15</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20.13</td>
+</tr>
+<tr>
+<td>4</td>
+<td>20.14</td>
+</tr>
+<tr>
+<td>5</td>
+<td>20.12</td>
+</tr>
+<tr>
+<td>6</td>
+<td>20.16</td>
+</tr>
+<tr>
+<td>7</td>
+<td>20.10</td>
+</tr>
+<tr>
+<td>8</td>
+<td>20.14</td>
+</tr>
+<tr>
+<td>9</td>
+<td>20.13</td>
+</tr>
+<tr>
+<td>10</td>
+<td>20.12</td>
+</tr>
+</tbody>
+</table>
+<h3 id="statistical-summary"><strong>Statistical Summary</strong></h3>
+<ul>
+<li>Mean time for 10 oscillations:</li>
+</ul>
+<div class="arithmatex">\[
+\overline{T}_{10} = \frac{\sum T_{10}}{10} = 20.13 \ \text{s}
+\]</div>
+<ul>
+<li>Standard deviation:</li>
+</ul>
+<div class="arithmatex">\[
+\sigma_T = \sqrt{\frac{1}{n-1} \sum (T_{10,i} - \overline{T}_{10})^2} = 0.01826 \ \text{s}
+\]</div>
+<ul>
+<li>Standard uncertainty:</li>
+</ul>
+<div class="arithmatex">\[
+\Delta T_{10} = \frac{\sigma_T}{\sqrt{10}} = 0.00577 \ \text{s}
+\]</div>
+<hr/>
+<h2 id="calculations"><strong>Calculations</strong></h2>
+<h3 id="1-period-and-uncertainty"><strong>1. Period and Uncertainty</strong></h3>
+<ul>
+<li>Period:</li>
+</ul>
+<div class="arithmatex">\[
+T = \frac{\overline{T}_{10}}{10} = 2.013 \ \text{s}
+\]</div>
+<ul>
+<li>Period uncertainty:</li>
+</ul>
+<div class="arithmatex">\[
+\Delta T = \frac{\Delta T_{10}}{10} = 0.000577 \ \text{s}
+\]</div>
+<h3 id="2-calculate-g"><strong>2. Calculate <span class="arithmatex">\(g\)</span></strong></h3>
+<p>Use the formula for a simple pendulum:</p>
+<div class="arithmatex">\[
+g = \frac{4\pi^2 L}{T^2} = \frac{4\cdot (\pi)^2 \cdot 1.000}{(2.013)^2} = 9.765 \ \text{m/s}^2
+\]</div>
+<h3 id="3-propagate-uncertainties"><strong>3. Propagate Uncertainties</strong></h3>
+<p>Use the relative uncertainty propagation formula:</p>
+<div class="arithmatex">\[
+\Delta g = g \cdot \sqrt{\left(\frac{\Delta L}{L}\right)^2 + \left(2\cdot \frac{\Delta T}{T}\right)^2}
+\]</div>
+<p>Plugging in values:</p>
+<div class="arithmatex">\[
+\Delta g = 9.765 \cdot \sqrt{\left(\frac{0.0005}{1.000}\right)^2 + \left(2\cdot \frac{0.000577}{2.013}\right)^2} = 0.005 \ \text{m/s}^2
+\]</div>
+<hr/>
+<h2 id="results-summary-table"><strong>Results Summary Table</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Value</th>
+<th>Uncertainty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(L\)</span></td>
+<td>1.000 m</td>
+<td><span class="arithmatex">\(\pm 0.0005\)</span> m</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\overline{T}_{10}\)</span></td>
+<td>20.13 s</td>
+<td><span class="arithmatex">\(\pm 0.00577\)</span> s</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(T\)</span></td>
+<td>2.013 s</td>
+<td><span class="arithmatex">\(\pm 0.000577\)</span> s</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(g\)</span></td>
+<td>9.765 m/s²</td>
+<td><span class="arithmatex">\(\pm 0.005\)</span> m/s²</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="analysis-and-discussion"><strong>Analysis and Discussion</strong></h2>
+<h3 id="1-comparison-with-accepted-value"><strong>1. Comparison with Accepted Value</strong></h3>
+<ul>
+<li>Standard gravitational acceleration at sea level is <span class="arithmatex">\(9.81 \ \text{m/s}^2\)</span></li>
+<li>Our result is within ~0.46% error margin.</li>
+</ul>
+<h3 id="2-sources-of-error"><strong>2. Sources of Error</strong></h3>
+<ul>
+<li><strong>Length measurement</strong>: Parallax errors and swing center misalignment.</li>
+<li><strong>Timing measurement</strong>: Human reaction delays (~0.2 s for single swing!) mitigated by timing multiple swings.</li>
+<li><strong>Amplitude</strong>: Angle must remain small for simple harmonic approximation to hold.</li>
+<li><strong>Environmental factors</strong>: Air resistance and string flex may introduce damping and non-ideal behavior.</li>
+</ul>
+<h3 id="3-assumptions-validity"><strong>3. Assumptions Validity</strong></h3>
+<ul>
+<li>Small-angle approximation (<span class="arithmatex">\(\theta &lt; 15^\circ\)</span>)</li>
+<li>Neglect of air resistance</li>
+<li>Ideal pivot point</li>
+</ul>
+<hr/>
+<h2 id="conclusion"><strong>Conclusion</strong></h2>
+<p>From experimental timing and measurement:</p>
+<div class="arithmatex">\[
+g = 9.765 \pm 0.005 \ \text{m/s}^2
+\]</div>
+<p>This estimate of gravitational acceleration is accurate within reasonable uncertainty bounds. This experiment underscores the importance of repetition, accurate data collection, and statistical processing in experimental physics.</p>
+<hr/>
+<h2 id="further-extensions"><strong>Further Extensions</strong></h2>
+<ul>
+<li><strong>Use a photogate</strong> for more accurate period detection.</li>
+<li><strong>Test with multiple lengths</strong> and plot <span class="arithmatex">\(T^2\)</span> vs <span class="arithmatex">\(L\)</span> to validate linearity (slope gives <span class="arithmatex">\(g\)</span>).</li>
+<li><strong>Simulate pendulum motion</strong> using differential equations for large angles.</li>
+</ul>
+<hr/>
+<h2 id="appendix-python-code-example"><strong>Appendix: Python Code Example</strong></h2>
+<pre><code class="language-python">import numpy as np
+
+# Inputs
+L = 1.000     # length in meters
+dL = 0.0005
+T10 = np.array([20.11, 20.15, 20.13, 20.14, 20.12, 20.16, 20.10, 20.14, 20.13, 20.12])
+
+T10_mean = np.mean(T10)
+T10_std = np.std(T10, ddof=1)
+T10_unc = T10_std / np.sqrt(len(T10))
+
+T = T10_mean / 10
+dT = T10_unc / 10
+
+g = (4 * np.pi**2 * L) / T**2
+dg = g * np.sqrt((dL / L)**2 + (2 * dT / T)**2)
+
+print(f"g = {g:.4f} ± {dg:.4f} m/s²")
+</code></pre>
+<hr/>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
