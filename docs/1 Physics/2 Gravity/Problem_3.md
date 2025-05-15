@@ -153,3 +153,5 @@ This framework can be extended to:
 
 Understanding the trajectories of freely released payloads is fundamental for mission planning in aerospace engineering and planetary science. Through mathematical analysis and simulation, this problem offers insight into gravitational dynamics and the real-world constraints of space travel.
 
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1YfnT862d7hx-byhgw42ebs6rz1EfXT0r?usp=sharing)
