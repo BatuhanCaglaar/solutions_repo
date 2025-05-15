@@ -15,6 +15,10 @@ $$
 \frac{G M m}{r^2} = \frac{m v^2}{r}
 $$
 
+![Gravitational force equals centripetal force](image.png)
+
+Gravitational force equals centripetal force
+
 Canceling $m$ and solving for $v$:
 
 $$
@@ -39,6 +43,10 @@ $$
 T^2 = \frac{4\pi^2 r^3}{G M}
 $$
 
+![Plot of T² vs r³ showing linearity](image-2.png)
+
+Plot of T² vs r³ showing linearity
+
 Hence, Kepler’s Third Law:
 
 $$
@@ -58,9 +66,22 @@ $$
 ### **3. Real-World Examples**
 
 - **Moon's orbit**: Use $T \approx 27.3$ days and $r \approx 3.84 \times 10^8$ m to estimate Earth’s mass.
+
+![Moon orbiting Earth](image-3.gif)
+
+ *Figure: The Moon's orbit around Earth, showing the relationship between orbital period and radius.*
+
 - **Planetary orbits** in our Solar System: More distant planets have longer orbital periods.
+
+![Solar System planetary orbits](image-3.png)
+
+ *Figure: Orbital paths of the planets in the Solar System, highlighting Kepler's Third Law in action.*
+
 - **Exoplanet detection**: Astronomers infer masses and distances using similar principles.
 
+![Exoplanet detection via transit method](image-4.png)
+
+ *Figure: Exoplanet detection using the transit method, where brightness dips reveal orbital properties.*
 ---
 
 ### **4. Python Simulation: Verifying the Law**
@@ -90,6 +111,7 @@ plt.grid(True)
 plt.legend()
 plt.show()
 ```
+![Kepler^s Third Law Verification](image-5.png)
 
 ---
 
@@ -112,3 +134,5 @@ Kepler’s Third Law:
 - Demonstrates how mathematics explains the universe’s structure.
 
 ---
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1JiS7tBRUYdaVvTnCahm1P2ishu7JnztA?usp=sharing)
