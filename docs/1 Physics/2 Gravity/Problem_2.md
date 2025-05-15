@@ -26,6 +26,11 @@ Where:
 
 ---
 
+![First Cosmic Velocity Diagram](image-6.png)
+
+*Figure: Orbital velocity as a function of altitude for the Earth.*
+
+
 ### **Second Cosmic Velocity (Escape Velocity)**
 
 The **Second Cosmic Velocity** is the minimum speed required for an object to break free from a celestial body's gravitational influence without further propulsion. It is derived from equating the kinetic energy to the gravitational potential energy:
@@ -36,11 +41,22 @@ $$
 
 Note: $v_2 = \sqrt{2} \cdot v_1$
 
+
+![Escape Velocity Explanation](image-7.png)
+
+*Figure: Escape velocity concept diagram showing gravitational energy vs kinetic energy.*
+
 ---
 
 ### **Third Cosmic Velocity**
 
 The **Third Cosmic Velocity** is the minimum speed needed for an object to escape the gravitational influence of the Sun, effectively leaving the Solar System. This velocity depends on the object's position relative to the Sun and is influenced by both the Earth's orbital velocity and the additional speed required to overcome the Sun's gravity.
+
+
+![Solar System Escape Velocity](image-8.png)
+
+*Figure: Vector representations and formulas of the first, second, and third cosmic velocities.*
+
 
 ---
 
@@ -156,6 +172,8 @@ plt.grid(True)
 plt.show()
 ```
 
+![Cosmic Velocities for Celestial Bodies](image-9.png)
+
 ---
 
 ## **4. Importance in Space Exploration**
@@ -171,3 +189,6 @@ These principles form the basis of orbital mechanics and interplanetary mission 
 ## **Conclusion**
 
 The cosmic velocities offer insight into how gravity controls motion in space. Understanding and calculating these values is essential for mission design and predicting object trajectories in astrophysics.
+
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tC3id58NIYNFc1G2ti9dI6ouuYYUNcEQ?usp=sharing)
