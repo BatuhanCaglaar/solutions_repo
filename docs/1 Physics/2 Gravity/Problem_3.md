@@ -5,6 +5,11 @@
 
 When a payload is released from a moving rocket near Earth, its subsequent trajectory is governed by initial conditions and gravitational forces. Analyzing these trajectories is essential for applications such as satellite deployment, re-entry missions, and understanding orbital mechanics.
 
+![Rocket Payload Paths](image-10.png)
+
+*Figure: Different types of trajectories (suborbital, orbital, parabolic, hyperbolic) based on velocity.*
+
+
 ---
 
 ## **1. Analysis of Possible Trajectories**
@@ -18,6 +23,12 @@ The path of a payload released near Earth can take various forms, primarily dete
 - **Hyperbolic Trajectory:** If the payload's velocity exceeds the escape velocity, it will follow a hyperbolic trajectory, escaping Earth's gravity with residual velocity.
 
 - **Suborbital Trajectory:** If the velocity is insufficient to achieve orbit, the payload will follow a suborbital path, re-entering the atmosphere and impacting Earth's surface.
+
+
+![Orbital Shapes](image-11.png)
+
+*Figure: Classification of trajectories based on energy — elliptical, parabolic, hyperbolic.*
+
 
 ---
 
@@ -108,6 +119,8 @@ plt.grid(True)
 plt.axis('equal')
 plt.show()
 ```
+
+![Trajectory of a Freely Released Payload Near Earth](image-12.png)
 
 ---
 
