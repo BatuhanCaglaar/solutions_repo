@@ -194,6 +194,8 @@
 <h1 id="problem-3">Problem 3</h1>
 <h2 id="motivation"><strong>Motivation</strong></h2>
 <p>When a payload is released from a moving rocket near Earth, its subsequent trajectory is governed by initial conditions and gravitational forces. Analyzing these trajectories is essential for applications such as satellite deployment, re-entry missions, and understanding orbital mechanics.</p>
+<p><img alt="Rocket Payload Paths" src="../image-10.png"/></p>
+<p><em>Figure: Different types of trajectories (suborbital, orbital, parabolic, hyperbolic) based on velocity.</em></p>
 <hr/>
 <h2 id="1-analysis-of-possible-trajectories"><strong>1. Analysis of Possible Trajectories</strong></h2>
 <p>The path of a payload released near Earth can take various forms, primarily determined by its initial velocity relative to Earth's surface:</p>
@@ -211,6 +213,8 @@
 <p><strong>Suborbital Trajectory:</strong> If the velocity is insufficient to achieve orbit, the payload will follow a suborbital path, re-entering the atmosphere and impacting Earth's surface.</p>
 </li>
 </ul>
+<p><img alt="Orbital Shapes" src="../image-11.png"/></p>
+<p><em>Figure: Classification of trajectories based on energy — elliptical, parabolic, hyperbolic.</em></p>
 <hr/>
 <h2 id="2-numerical-analysis-of-payload-path"><strong>2. Numerical Analysis of Payload Path</strong></h2>
 <p>To compute the payload's trajectory, we can numerically integrate the equations of motion under Earth's gravitational field. The primary forces to consider are:</p>
@@ -292,6 +296,7 @@ plt.grid(True)
 plt.axis('equal')
 plt.show()
 </code></pre>
+<p><img alt="Trajectory of a Freely Released Payload Near Earth" src="../image-12.png"/></p>
 <hr/>
 <h2 id="3-orbital-insertion-re-entry-and-escape-scenarios"><strong>3. Orbital Insertion, Re-entry, and Escape Scenarios</strong></h2>
 <ul>
